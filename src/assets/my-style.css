@@ -1,0 +1,32 @@
+.card-glance i{
+   font-size: 36px;
+   color: #777;
+}
+
+.card-glance .post{
+   text-align: center;
+}
+
+.table-comments img{
+	max-width: 60px;
+}
+
+.stats{
+	color: #777;
+	margin: 0 5px;
+}
+
+.table-comments .footer a,
+.card-posts .stats a{
+    color: #777;
+    padding: 0 5px;
+}
+
+.card-posts .stats{
+	padding-top: 15px;
+}
+
+.card-posts img{
+	max-width: 180px;
+	max-height: 70px;
+}
