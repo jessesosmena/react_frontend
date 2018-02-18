@@ -1,14 +1,13 @@
 import React, { Component } from 'react';  
-import { Col } from 'reactstrap';
 import { connect } from 'react-redux';  
-import logo from '../logo.svg';
-import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { logoutRequest, clientRequest } from './actions';
 import Errors from '../notifications/Errors';
 import { setClient, setClientData } from '../client/actions';
 //import Slider from '../slider';
-import Slider from '../slider/index'; 
+
+import Messages from '../notifications/Messages';  
+
 
 class Cart extends Component {  
 
@@ -22,6 +21,8 @@ class Cart extends Component {
       requesting: PropTypes.bool,
       logout_successful: PropTypes.bool,
       client_successful: PropTypes.bool,
+      errors: PropTypes.array,
+      messages: PropTypes.array,
     }),
     client: PropTypes.object,
   }
@@ -66,14 +67,12 @@ class Cart extends Component {
     const {
       cart: {
         requesting,
-
         client_successful,
         client_data,
         errors,
+        messages,
       },
-      client: {
-        token,
-      },
+      
     } = this.props
 
 
@@ -88,49 +87,53 @@ class Cart extends Component {
         user_name = user.name
       }
 
+  return (
 
-    return (
-      <div>
-        {!requesting && client_successful && client_data && (
-            <div className="alert alert-info alert-dismissable">
-              <strong>Welcome to React {user_name}</strong>
-            </div>         
-        )}  
-        <Navbar color="faded" light>
-          <NavbarBrand href="" className="mr-auto">
-            <Col xs="3" sm={{ size: 12, offset: 0 }}>
-               <img src={logo} className="App-logo" alt="logo"/>
-            </Col>
-          </NavbarBrand>
-           <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
-          <Collapse isOpen={!this.state.collapsed} navbar>
-            <Nav navbar>
+  <div>
+     
+      
+      <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
+     
+      <a className="navbar-brand" href="">Home</a>
 
-              <NavItem>
-                <NavLink href="" onClick={this.logout}>
-                  <button className="btn btn-info btn-md">Logout</button>
-                </NavLink>
+      
+      <ul className="navbar-nav">
+        <li className="nav-item">
+          <a className="nav-link" href="">About</a>
+        </li>
+        <li className="nav-item">
+          <a className="nav-link" href="">Contact</a>
+        </li>
 
-                  <div>     
-                      {!requesting && !!errors.length && (
-                          <Errors message="Failure to fetch user due to:" errors={errors} />
-                      )}
+        
+        <li className="nav-item dropdown">
+          <a className="nav-link dropdown-toggle" href="" id="navbardrop" data-toggle="dropdown">
+            {!requesting && client_successful && client_data && (
+              <strong>Hello! {user_name}</strong>   
+            )}  
+          </a>
+          <div className="dropdown-menu">
+            <a className="dropdown-item" href="">Link 1</a>
+            <a className="dropdown-item" href="">Link 2</a>
+            <a className="dropdown-item" href="" onClick={this.logout}>Logout</a>
+          </div>
+        </li>
+      </ul>
+    </nav>
+    {!requesting && !!errors.length && (
+        <div className="alert alert-info alert-dismissable text-center">
+            <Errors message="Failure to fetch user" errors={errors} />
+        </div>         
+    )}  
 
-                      {!requesting && client_successful && (
-                          <p>
-                            {token}
-                          </p>
-                      )}
-                  </div>
+    {!requesting && !!messages.length && (
+        <div className="alert alert-info alert-dismissable text-center">
+          <Messages messages={messages} className="text-left" />
+        </div>         
+    )}  
 
-              </NavItem>
-            </Nav>
-          </Collapse>
-        </Navbar>
+  </div>
 
-
-        <Slider />
-      </div>
     )
   }
 }

@@ -3,21 +3,19 @@ import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';  
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import logo from '../logo.svg';
 import Messages from '../notifications/Messages';  
 import Errors from '../notifications/Errors';
-import { Col,  Card } from 'reactstrap';
-
 import loginRequest from './actions';
 
 const required = value => value ? undefined : 'Required'
+
 const email = value =>
   value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value) ?
   'Invalid email address' : undefined
 
-
 const renderField = ({input, type, placeholder, meta:{error, touched }}) => (
 <div>
+ 
   <input {...input} className="form-control" type={type} placeholder={placeholder}/>
   {touched && error && 
    <span id="validation-error" className="text-danger float-left">{error}</span>}
@@ -25,7 +23,11 @@ const renderField = ({input, type, placeholder, meta:{error, touched }}) => (
 )
 
 
-class Login extends Component {  
+class Login extends Component { 
+
+  componentDidMount() {
+   	window.jQuery('.title').css('color', '#000');
+  } 
  
   static propTypes = {
     handleSubmit: PropTypes.func,
@@ -35,7 +37,7 @@ class Login extends Component {
     }),
     login: PropTypes.shape({
       requesting: PropTypes.bool,
-      successful: PropTypes.bool,
+      //successful: PropTypes.bool,
       messages: PropTypes.array,
       errors: PropTypes.array,
       //token: PropTypes.array,
@@ -53,7 +55,6 @@ class Login extends Component {
       handleSubmit, 
       login: {
         requesting,
-        successful,
         messages,
         errors,
         token,
@@ -64,65 +65,79 @@ class Login extends Component {
     } = this.props
 
     return (
-        <div>
-            {!requesting && signup_successful && (
-			    <div className="alert alert-info alert-dismissable">
-				    <strong>You are registered successfully!</strong>
-			    </div>         
-			)}  
-	        <br/>
-	            <Col md={{ size: 4, offset: 4 }}>
-                    <Card>
-			            <div className="header">
-			              <img src={logo} className="App-logo" alt="logo" />
-		                  <h4 className="title">LOGIN</h4>
-		                </div>
-						<div className="content">
-							<form onSubmit={handleSubmit(this.submit)}>
-							    <Col lg={{ size: 12, offset: 0 }}>
-					            <Field
+     
+		    <div className="container">
+              <br /> <br />
+		      <div className="auth-messages">
+		          {!requesting && !!errors.length && (
+		          	<div className="alert alert-info alert-dismissable text-center">
+				      <Errors message="Failure to login due to:" errors={errors} />
+			        </div>  
+		          )}
+		          {requesting && !!messages.length && !token && (
+		          	<div className="alert alert-info alert-dismissable text-center">
+				      <Messages messages={messages} />
+			        </div>    
+		          )}
+
+		          {!requesting && signup_successful && (
+				    <div className="alert alert-info alert-dismissable text-center">
+					    <strong>Signup was successful!</strong>
+				    </div>         
+			      )}  
+		        </div>
+
+			<div className="row main">
+				<div className="panel-heading">
+	               <div className="panel-title text-center">
+	               		<h1 className="title">React-Redux Auth Demo</h1>
+	               		<hr />
+	               	</div>
+	            </div> 
+
+				<div className="main-login main-center">
+
+					<form onSubmit={handleSubmit(this.submit)}>
+						
+						<div className="form-group">
+							<label className="cols-sm-2 control-label">Your Email</label>
+							<div className="cols-sm-10">
+								<Field
 						            name="email"
 							        label="Email"
 							        type="email"
 							        component={renderField}
-							        placeholder="Enter Email"
+							        placeholder="your Email"
 							        validate={[ required, email ]}
-						            />
-						        </Col>
-					            <br/>
-					            <Col lg={{ size: 12, offset: 0 }}>
-					            <Field
+						        />
+							</div>
+						</div>
+
+						<div className="form-group">
+							<label className="cols-sm-2 control-label">Password</label>
+						    <div className="cols-sm-10">
+							    <Field
 						            name="password"
 							        label="Password"
 							        type="password"
 							        component={renderField}
-							        placeholder="Enter Password"
+							        placeholder="your Password"
 							        validate={[ required ]}
-						            />
-					            <br/>
-					            </Col>
-					            <Col lg={{ size: 12, offset: 0 }}>
-							    <button className="btn btn-info btn-block">LOGIN</button>
-							    </Col>
-					                <br/>
-							        <div className="auth-messages">
-							          {/* As in the signup, we're just using the message and error helpers */}
-							          {!requesting && !!errors.length && (
-							            <Errors message="Failure to login due to:" errors={errors} />
-							          )}
-							          {requesting && !!messages.length && !token && (
-							            <Messages messages={messages} />
-							          )}
-							        
-							          {!requesting && !!successful && (
-							            <Link to="/signup">Not yet Registered? Click Here »</Link>
-							          )}
-							        </div>
-							</form>
-					    </div>
-		            </Card>
-		        </Col>
-        </div>
+						        />
+							</div>
+						</div>
+
+						<div className="form-group">
+						      <button disabled={requesting && !!messages.length} className="btn btn-primary btn-block btn-lg btn-block">Login</button> 
+						</div>
+
+						<div className="login-register">
+				             <Link to="/signup">Signup</Link>
+				        </div>
+					</form>
+				</div>
+			</div>
+		</div>
     )
   }
 }

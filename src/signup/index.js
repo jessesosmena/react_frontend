@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';  
 import { connect } from 'react-redux';
-import logo from '../logo.svg';
 import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Col,  Card } from 'reactstrap';
 
 // Import the helpers.. 
 import Messages from '../notifications/Messages';  
@@ -27,7 +25,7 @@ const email = value =>
   value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value) ?
   'Invalid email address' : undefined
 
-
+ 
 const renderField = ({input, type, placeholder, meta:{error, touched}}) => (
     <div>
       <input {...input} className="form-control" type={type} placeholder={placeholder}/>
@@ -37,7 +35,25 @@ const renderField = ({input, type, placeholder, meta:{error, touched}}) => (
   )
 
 
+let eValue
+function handleInputChange (property) {
+  return (e) => {
+    this.setState({ [property]: e.target.value })
+    return eValue = e.target.value
+  }
+}
+
+const password2 = value =>
+  value && value !== eValue ?
+  'Invalid Password' : undefined
+
+
 class Signup extends Component {
+
+	constructor(props) {
+	    super(props);
+	    this.handleInputChange = handleInputChange.bind(this)
+	}
 
 	static propTypes = {
 	    handleSubmit: PropTypes.func,
@@ -49,96 +65,127 @@ class Signup extends Component {
 	    }),
 	}
 
-		submit = (values) => {
-		   this.props.dispatch(signupRequest(values))
-		}
+	submit = (values) => {
+	   this.props.dispatch(signupRequest(values))
+	}
 
     render () { 
 
-    	
 	    const {
 	      handleSubmit,
 	      signup: {
 	        requesting,
-	        signup_successful,
 	        messages,
 	        errors,
+	        signup_successful,
 	      },
 	    } = this.props
 
 	    return (
-	        <div>
-	        <br/>
-			    <Col lg={{ size: 4, offset: 4 }}>
-				    <Card>
-			            <div className="header">
-			              <img src={logo} className="App-logo" alt="logo" />
-		                  <h4 className="title">SIGNUP</h4>
-		                </div>
-						<form onSubmit={handleSubmit(this.submit)}>
-					        <Col lg={{ size: 12, offset: 0 }}>
-					        <Field 
-					            name="name"
-					            label="Name"
-					            type="text"
-					            component={renderField}
-					            placeholder="Enter Name"
-					            validate={[ required, minValue6, maxLength15 ]}
-					        />
+	     
+			<div className="container">
+            <br /> <br />
+		    <div className="auth-messages text-center">
+	            {!requesting && !!errors.length && (
+	            	<div className="alert alert-info alert-dismissable text-center">
+                       <Errors message="Failure to signup due to:" errors={errors} />
+			        </div>
+				)}
 
-					        </Col>
-					        <br/>
-					        <Col lg={{ size: 12, offset: 0 }}>
-					        <Field
-					            name="email"
-					            label="Email"
-					            type="email"
-					            component={renderField}
-					            placeholder="Enter Email"
-					            validate={[ required, email ]}
-					        />
-					        </Col>
-					        <br/>
-					        <Col lg={{ size: 12, offset: 0 }}>
-					        <Field
-					            name="password"
-					            label="Password"
-					            type="password"
-					            component={renderField}
-					            placeholder="Enter Password"
-					            validate={[ required ]}
-					        />
-					        </Col>
-					        <br/>
-					        <Col lg={{ size: 12, offset: 0 }}>
-					        <button className="btn btn-info btn-block">SIGNUP</button>
-					        </Col>
-					       
-			                <br/>
-				            <div>
-					     
-					        {!requesting && !!errors.length && (
-					            <Errors message="Failure to signup due to:" errors={errors} />
-					        )}
+				{requesting && !!messages.length && (
+					<div className="alert alert-info alert-dismissable text-center">
+                        <Messages messages={messages} />
+			        </div>
+				)}
 
-					        {requesting && !!messages.length && (
-					            <Messages messages={messages} />
-					        )}
+				{!requesting && signup_successful && (
+					<Redirect to="/" />
+				)}
+		    </div>
 
-					        {!requesting && signup_successful && (
-					            <div>
-					               <Redirect to="/" />
-					            </div>
-					        )}
+			<div className="row main">
+				<div className="panel-heading">
+	               <div className="panel-title text-center">
+	               		<h1 className="title">React-Redux Auth Demo</h1>
+	               		<hr />
+	               	</div>
+	            </div> 
 
-					        {/* Redux Router's <Link> component for quick navigation of routes */}
-					        {!requesting && !signup_successful && (
-					            <Link to="/">Already Signup? Login here »</Link>
-					        )}
-						    </div>
-						</form>
-				    </Card> 
-			    </Col>
+				<div className="main-login main-center">
+
+					<form onSubmit={handleSubmit(this.submit)}>
+
+				    	<div className="form-group">
+						<label className="cols-sm-2 control-label">Name</label>
+					    <div className="cols-sm-10">
+							    <Field
+						            name="name"
+							        label="Name"
+							        type="name"
+							        component={renderField}
+							        placeholder="your Name"
+							        validate={[ required, minValue6 ]}
+						        />
+						</div>
+
+						</div>
+						
+						<div className="form-group">
+							<label className="cols-sm-2 control-label">Your Email</label>
+							<div className="cols-sm-10">
+							
+								<Field
+						            name="email"
+							        label="Email"
+							        type="email"
+							        component={renderField}
+							        placeholder="your Email"
+							        validate={[ required, email ]}
+						        />
+								
+							</div>
+						</div>
+
+						<div className="form-group">
+							<label className="cols-sm-2 control-label">Password</label>
+						    <div className="cols-sm-10">
+							    <Field
+						            name="password"
+							        label="Password"
+							        type="password"
+							        onChange={this.handleInputChange('text1')}
+							        component={renderField}
+							        placeholder="your Password"
+							        validate={[ required, maxLength15 ]}
+						        />
+							</div>
+
+						</div>
+
+						<div className="form-group">
+							<label className="cols-sm-2 control-label">Password Confirmation</label>
+						    <div className="cols-sm-10">
+								    <Field
+							            name="password2"
+								        label="Password2"
+								        type="password"
+								        component={renderField}
+								        placeholder="Confirm your Password"
+								        validate={[ required, password2 ]}
+							        />
+							</div>
+
+						</div>
+
+						<div className="form-group">
+							   <button disabled={requesting && !!messages.length} className="btn btn-primary btn-block btn-lg btn-block">Signup</button>
+						</div>
+						<div className="login-register">
+				             <Link to="/">Login</Link>
+				         </div>
+					</form>
+				</div>
+			</div>
 			</div>
 	    )
     }

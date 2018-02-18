@@ -1,105 +1,92 @@
-.slider {
-  position: relative;
-  width: 1000px;
-  margin: 0 auto;
-  height: 500px;
-  overflow: hidden;
-  white-space: nowrap;
+/*
+/* Created by Filipe Pina
+ * Specific styles of signin, register, component
+ */
+/*
+ * General styles
+ */
 
-  .slider-wrapper {
-    position: relative;
-    height: 100%;
+h1.title { 
+	font-size: 50px;
+	font-family: 'Passion One', cursive; 
+	font-weight: 400; 
+}
+
+hr{
+	width: 10%;
+	color: #fff;
+}
+
+.form-group{
+	margin-bottom: 15px;
+    width: 350px;
+    padding: 4px;
+}
+
+
+label{
+	margin-bottom: 25px;
+}
+
+input,
+input::-webkit-input-placeholder {
+    font-size: 12px;
+    padding-top: 3px;
     width: 100%;
-
-    .slide {
-      display: inline-block;
-      height: 100%;
-      width: 100%;
-    }
-  }
 }
 
-.slider-right-arrow, .slider-left-arrow {
-  height: 50px;
-  width: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f9f9f9;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: transform ease-in .1s;
+.main-login{
+ 	background-color: #fff;
+    /* shadows and rounded borders */
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
 
-  &:hover {
-    transition: transform ease-in .1s;
-    transform: scale(1.1)
-  }
 }
 
-.slider-right-arrow {
-  position: absolute;
-  top: 50%;
-  right: 25px;
-  z-index: 999;
-  color: #fff;
-
-  img {
-    transform: translate(2px, 0);
-
-    &:focus {
-      outline: 0;
-    }
-  }
+.main-center{
+ 	margin-top: 30px;
+ 	margin: 0 auto;
+ 	max-width: 500px;
+    padding: 30px 40px;
 }
 
-.slider-left-arrow {
-  position: absolute;
-  top: 50%;
-  left: 25px;
-  z-index: 999;
-  color: #fff;
-
-  img {
-    transform: translate(-2px, 0);
-
-    &:focus {
-      outline: 0;
-    }
-  }
+.login-button{
+	margin-top: 5px;
 }
 
-.dots-container {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  text-align: center;
-  z-index: 9999;
-  padding: 5px 0;
-
-  .dot {
-    background: #222;
-    display: inline-block;
-    padding: 10px;
-    margin-right: 5px;
-    cursor: pointer;
-    border-radius: 50%;
-  }
-  .active {
-    background: #fff;
-  }
+.login-register{
+	font-size: 11px;
+	text-align: center;
 }
 
-.autoplay {
-  cursor: pointer;
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 5px 10px;
-  background: #ddd;
-  color: #333;
-  font-size: 15px;
 
-  p {
-    margin: 0
-  }
+
+section {
+  height:calc(90% - 50px);
 }
+
+.affix {
+  padding:0px;
+  -webkit-transition:padding 0.2s linear;
+  -moz-transition:padding 0.2s linear;  
+  -o-transition:padding 0.2s linear;         
+  transition:padding 0.2s linear;  
+
+}
+
+.affix-top {
+  padding-top:15px;
+  padding-bottom:15px;
+  -webkit-transition:padding 0.5s linear;
+  -moz-transition:padding 0.5s linear;  
+  -o-transition:padding 0.5s linear;         
+  transition:padding 0.5s linear;  
+}
+
+
+
+

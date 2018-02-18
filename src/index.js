@@ -7,11 +7,13 @@ import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
 //import logger from "redux-logger";
-import thunk from "redux-thunk";
-import promise from "redux-promise-middleware";
+import thunk from 'redux-thunk';
+import promise from 'redux-promise-middleware';
 //import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 //import './assets/light-bootstrap-dashboard.css';
 //import './assets/animate.min.css';
+
+import './include/bootstrap';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import registerServiceWorker from './registerServiceWorker';

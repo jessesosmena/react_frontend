@@ -9,8 +9,8 @@ import {
 const initialState = {  
   requesting: false,
   client_successful: false,
-  
   client_data: [],
+  messages: [],
   errors: [],
 }
 
@@ -30,6 +30,7 @@ const reducer = function cartReducer (state = initialState, action) {
 	        requesting: false,
 	        client_successful: true,
 	        client_data: action.client,
+	        messages: [{ body: 'Your login was successful!', time: new Date() }],
 	        errors: [],
 	      }
 
